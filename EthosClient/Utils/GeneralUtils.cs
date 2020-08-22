@@ -30,7 +30,7 @@ namespace EthosClient.Utils
             ESP = false,
             SpinBot = false,
             ForceClone = false,
-            IsDevBranch = false,
+            IsDevBranch = true,
             InfiniteJump = false,
             SpeedHax = false,
             CustomSerialization = false,

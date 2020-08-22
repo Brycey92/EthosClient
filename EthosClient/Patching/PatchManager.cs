@@ -51,7 +51,7 @@ namespace EthosClient.Patching
                 new Patch("Ethos_Extras", typeof(VRCSDK2.VRC_SyncVideoPlayer).GetMethod("AddURL"), GetLocalPatch("AntiVideoPlayerHijacking"), null);
                 new Patch("Ethos_Extras", typeof(VRCSDK2.VRC_SyncVideoPlayer).GetMethod("Play"), GetLocalPatch("VideoPlayerPatch"), null);
                 new Patch("Ethos_Extras", typeof(VRC_EventHandler).GetMethod("InternalTriggerEvent"), GetLocalPatch("TriggerEvent"), null);
-                new Patch("Ethos_Other", typeof(ObjectPublicAbstractSealedStPhStObInSeSiObBoStUnique).GetMethod("ObjectPublicAbstractSealedStPhStObInSeSiObBoStUnique.Method_Private_Static_Boolean_Byte_Object_ObjectPublicObByObInByObObUnique_SendOptions_0"), GetLocalPatch("OpRaiseEventPrefix"), null);
+                //new Patch("Ethos_Other", typeof(ObjectPublicAbstractSealedStPhStObInSeSiObBoStUnique).GetMethod("ObjectPublicAbstractSealedStPhStObInSeSiObBoStUnique.Method_Private_Static_Boolean_Byte_Object_ObjectPublicObByObInByObObUnique_SendOptions_0"), GetLocalPatch("OpRaiseEventPrefix"), null);
             }
             catch(Exception e) { if (GeneralUtils.IsDevBranch) Console.WriteLine(e.ToString()); }
             finally { ConsoleUtil.Info("All Patches have been applied successfully."); }
