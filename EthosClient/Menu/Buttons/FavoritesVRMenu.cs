@@ -64,7 +64,7 @@ namespace EthosClient.Utils
             {
                 if (X == 4)
                 {
-                    if (Y != 4)
+                    if (Y != 2)
                     {
                         new QMSingleButton(this, X, Y, avatar.Name, delegate
                         {
@@ -83,8 +83,8 @@ namespace EthosClient.Utils
                                 }), null, null, false);
                             }
                         }, $"by {avatar.Author}\nSwitch into this avatar.", Color.red, Color.white);
+                        Y++;
                     }
-                    Y++;
                 }
                 else
                 {

@@ -77,17 +77,12 @@ namespace EthosClient.Utils
             {
                 ConsoleUtil.Info("Enter Avatar ID: ");
                 string ID = Console.ReadLine();
-                VRC.Core.API.SendRequest($"avatars/{ID}", VRC.Core.BestHTTP.HTTPMethods.Get, new ApiModelContainer<ApiAvatar>(), null, true, true, 3600f, 2, null);
-                new PageAvatar
+                PageAvatar PAviSaved = new PageAvatar() { avatar = new SimpleAvatarPedestal() };
+                new ApiAvatar() { id = ID }.Get(new Action<ApiContainer>(x =>
                 {
-                    avatar = new SimpleAvatarPedestal
-                    {
-                        field_Internal_ApiAvatar_0 = new ApiAvatar
-                        {
-                            id = ID
-                        }
-                    }
-                }.ChangeToSelectedAvatar();
+                    PAviSaved.avatar.field_Internal_ApiAvatar_0 = x.Model.Cast<ApiAvatar>();
+                    PAviSaved.ChangeToSelectedAvatar();
+                }), null, null, false);
                 GeneralWrappers.GetVRCUiPopupManager().AlertPopup("<color=cyan>Success!</color>", "<color=green>Successfully cloned that avatar by It's Avatar ID.</color>");
             }, "Sets your current avatar using an avatar ID.", Color.red, Color.white);
 

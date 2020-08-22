@@ -31,7 +31,6 @@ namespace EthosClient.Patching
             try
             {
                 new Patch("Ethos_Moderation", typeof(ModerationManager).GetMethod("KickUserRPC"), GetLocalPatch("AntiKick"), null);
-                new Patch("Ethos_Moderation", typeof(ModerationManager).GetMethod("Method_Private_Void_Boolean_0"), GetLocalPatch("KickPatch"), null);
                 new Patch("Ethos_Moderation", typeof(ModerationManager).GetMethod("Method_Public_Boolean_String_String_String_1"), GetLocalPatch("CanEnterPublicWorldsPatch"), null);
                 new Patch("Ethos_Moderation", typeof(ModerationManager).GetMethod("Method_Public_Boolean_String_String_String_0"), GetLocalPatch("IsKickedFromWorldPatch"), null);
                 new Patch("Ethos_Moderation", typeof(ModerationManager).GetMethod("Method_Public_Boolean_String_8"), GetLocalPatch("IsBlockedEitherWayPatch"), null);
@@ -50,9 +49,10 @@ namespace EthosClient.Patching
                 new Patch("Ethos_Extras", AccessTools.Method(typeof(Il2CppSystem.Console), "WriteLine", new Type[] { typeof(string) }), GetLocalPatch("IL2CPPConsoleWriteLine"), null);
                 new Patch("Ethos_Extras", typeof(ImageDownloader).GetMethod("DownloadImage"), GetLocalPatch("AntiIpLogImage"), null);
                 new Patch("Ethos_Extras", typeof(VRCSDK2.VRC_SyncVideoPlayer).GetMethod("AddURL"), GetLocalPatch("AntiVideoPlayerHijacking"), null);
-                new Patch("Ethos_Extras", typeof(VRCSDK2.VRC_SyncVideoPlayer).GetMethods().FirstOrDefault(x => x.Name == "Play" && x.GetParameters().Count() == 0), GetLocalPatch("VideoPlayerPatch"), null);
+                new Patch("Ethos_Extras", typeof(VRCSDK2.VRC_SyncVideoPlayer).GetMethod("Play"), GetLocalPatch("VideoPlayerPatch"), null);
                 new Patch("Ethos_Extras", typeof(PortalInternal).GetMethod("Method_Public_Void_3"), GetLocalPatch("EnterPortalPatch"), null);
                 new Patch("Ethos_Extras", typeof(VRC_EventHandler).GetMethod("InternalTriggerEvent"), GetLocalPatch("TriggerEvent"), null);
+                new Patch("Ethos_Other", typeof(ObjectPublicAbstractSealedStPhStObInSeSiObBoStUnique).GetMethod("ObjectPublicAbstractSealedStPhStObInSeSiObBoStUnique.Method_Private_Static_Boolean_Byte_Object_ObjectPublicObByObInByObObUnique_SendOptions_0"), GetLocalPatch("OpRaiseEventPrefix"), null);
                 new Patch("Ethos_Extras", typeof(PhotonPeer).GetMethod("SendOperation"), GetLocalPatch("SendOperationPatch"), null);
             }
             catch(Exception e) { if (GeneralUtils.IsDevBranch) Console.WriteLine(e.ToString()); }
@@ -63,7 +63,18 @@ namespace EthosClient.Patching
 
         #region Patches
 
-        private static bool KickPatch() { return !Configuration.GetConfig().AntiKick; }
+        private static bool OpRaiseEventPrefix(ref byte __0, ref Il2CppSystem.Object __1, ref ObjectPublicObByObInByObObUnique __2, ref SendOptions __3)
+        {
+            try
+            {
+                if (__0 == 7)
+                    return !GeneralUtils.CustomSerialization;
+
+            }
+            catch { }
+            return true;
+        }
+
 
         private static bool TriggerEvent(ref VrcEvent __0, ref VrcBroadcastType __1, ref int __2, ref float __3)
         {
@@ -85,9 +96,8 @@ namespace EthosClient.Patching
                 if (GeneralUtils.WorldTriggers && (__1 != VrcBroadcastType.Always || __1 != VrcBroadcastType.AlwaysBufferOne || __1 != VrcBroadcastType.AlwaysUnbuffered))
                     __1 = VrcBroadcastType.Always;
                 
-
             }
-            catch(Exception c) { ConsoleUtil.Exception(c); }
+            catch { }
             return true;
         }
 
@@ -95,24 +105,11 @@ namespace EthosClient.Patching
         {
             try
             {
-                if (GeneralUtils.IsDevBranch)
-                {
-                    ConsoleUtil.Info("==========================================");
-                    ConsoleUtil.Info($"Event: {__0}");
-                    ConsoleUtil.Info($"Parameters:");
-                    ConsoleUtil.Info("===========================================");
-                    foreach(var parameter in __1)
-                    {
-                        ConsoleUtil.Info($"Byte Index: {parameter.Key}\nValue: {parameter.Value.ToString()}");
-                    }
-                    ConsoleUtil.Info("===========================================");
-                    ConsoleUtil.Info($"Send Options:\nChannel: {__2.Channel}\nDelivery Mode: {__2.DeliveryMode}\nEncrypt: {__2.Encrypt}\nReliable: {__2.Reliability}");
-                    ConsoleUtil.Info("=========================================");
-                }
-
                 if (__0 == 7)
                     return !GeneralUtils.CustomSerialization;
 
+                if (__0 == 202)
+                    return !GeneralUtils.Invisible;
             }
             catch { }
             return true;
@@ -134,7 +131,7 @@ namespace EthosClient.Patching
             return true;
         }
 
-        private static bool VideoPlayerPatch(VRCSDK2.VRC_SyncVideoPlayer __instance)
+        private static bool VideoPlayerPatch(ref VRCSDK2.VRC_SyncVideoPlayer __instance)
         {
             if (__instance.Videos.Count() > 0)
             {

@@ -30,7 +30,7 @@ namespace EthosClient.Utils
             ESP = false,
             SpinBot = false,
             ForceClone = false,
-            IsDevBranch = true,
+            IsDevBranch = false,
             InfiniteJump = false,
             SpeedHax = false,
             CustomSerialization = false,
@@ -39,10 +39,11 @@ namespace EthosClient.Utils
             AutoDeleteEveryonesPortals,
             AutoDeleteAllPickups = false,
             VoiceMod = false,
+            DestroyUSpeakOnPlayerJoin = false,
             Invisible = false;
 
         public static string 
-            Version = "2.4";
+            Version = "2.5";
 
         public static float
             WalkSpeed = 2f,
@@ -80,8 +81,8 @@ namespace EthosClient.Utils
             for (int i = 0; i < array.Length; i++)
             {
                 Collider collider = array[i];
-                bool flag = collider.GetComponent<PlayerSelector>() != null || collider.GetComponent<VRC.SDKBase.VRC_Pickup>() != null || collider.GetComponent<QuickMenu>() != null || collider.GetComponent<VRC_Station>() != null || collider.GetComponent<VRC.SDKBase.VRC_AvatarPedestal>() != null;
-                if (!flag && collider != component) collider.enabled = toggle;
+                if (collider.GetComponent<PlayerSelector>() != null || collider.GetComponent<VRC.SDKBase.VRC_Pickup>() != null || collider.GetComponent<QuickMenu>() != null || collider.GetComponent<VRC_Station>() != null || collider.GetComponent<VRC.SDKBase.VRC_AvatarPedestal>() != null && collider != component) 
+                    collider.enabled = toggle;
             }
         }
 
@@ -103,9 +104,13 @@ namespace EthosClient.Utils
 
         public static bool SuitableVideoURL(string url)
         {
-            if (url.Contains("youtube.com")) return true;
-            else if (url.Contains("youtu.be")) return true;
-            else if (url.Contains("twitch.tv")) return true;
+            if (url.Contains("youtube.com")) 
+                return true;
+            else if (url.Contains("youtu.be")) 
+                return true;
+            else if (url.Contains("twitch.tv")) 
+                return true;
+
             return false;
         }
 

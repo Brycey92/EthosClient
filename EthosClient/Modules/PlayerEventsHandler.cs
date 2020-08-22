@@ -30,9 +30,12 @@ namespace EthosClient.Modules
         public override void OnPlayerJoin(VRCPlayerApi player)
         {
             var _player = GeneralWrappers.GetPlayerManager().GetPlayer(player);
-            if (_player == null) return;
+            if (_player == null) 
+                return;
+
             var apiuser = _player.GetAPIUser();
-            if (apiuser == null) return;
+            if (apiuser == null) 
+                return;
 
             if (GeneralUtils.Authorities.TryGetValue(apiuser.id, out string what))
             {
@@ -49,6 +52,20 @@ namespace EthosClient.Modules
 
             if (Configuration.GetConfig().LogModerations)
                 GeneralUtils.InformHudText(Color.green, $"{apiuser.displayName} has joined.");
+
+            if (Configuration.GetConfig().AntiPhotonBot)
+            {
+                if (_player.GetAPIUser().statusIsSetToOffline && _player.GetVRCPlayer().prop_Int16_0 == 0)
+                {
+                    //most likely photon bot lol, they're offline on the api and their ping is spoofed to 0, this is suspicious as fuck ok
+                    GeneralUtils.InformHudText(Color.red, $"{_player.GetAPIUser().displayName} is most likely a photon bot\nDestroyed their game objects.");
+                    UnityEngine.Object.Destroy(_player.GetVRCPlayer().gameObject);
+                    UnityEngine.Object.Destroy(_player.gameObject);
+                }
+            }
+
+            if (GeneralUtils.DestroyUSpeakOnPlayerJoin)
+                UnityEngine.Object.Destroy(_player.GetVRCPlayer().GetUSpeaker().gameObject);
 
             if (GeneralUtils.ESP)
             {

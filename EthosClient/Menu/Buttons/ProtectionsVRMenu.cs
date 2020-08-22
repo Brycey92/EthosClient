@@ -99,6 +99,31 @@ namespace EthosClient.Utils
             {
                 GeneralUtils.AutoDeleteEveryonesPortals = false;
             }, "This feature, when enabled, automatically locally deletes all pickups in the world. (This should prevent Love's shitty Desync V5 bullshit)", Color.red, Color.white).setToggleState(GeneralUtils.AutoDeleteAllPickups);
+            new QMToggleButton(this, 4, 1, "Allow\nPhoton Bots", delegate
+            {
+                Configuration.GetConfig().AntiPhotonBot = true;
+                Configuration.SaveConfiguration();
+            }, "Prevent\nPhoton Bots", delegate
+            {
+                Configuration.GetConfig().AntiPhotonBot = false;
+                Configuration.SaveConfiguration();
+            }, "If this feature is enabled, when players join, they'll be checked if they're a photon bot and if they are, they'll be locally destroyed.", Color.red, Color.white).setToggleState(Configuration.GetConfig().AntiPhotonBot);
+            new QMToggleButton(this, 4, 2, "Destroy\nUspeakers On Join", delegate
+            {
+                GeneralUtils.DestroyUSpeakOnPlayerJoin = true;
+            }, "Don't destroy\nUspeakers On Join", delegate
+            {
+                GeneralUtils.DestroyUSpeakOnPlayerJoin = false;
+            }, "When this feature is enabled, player's uspeakers will be auto destroyed when they join.", Color.red, Color.white).setToggleState(GeneralUtils.DestroyUSpeakOnPlayerJoin);
+            new QMToggleButton(this, 5, 0, "Prevent\nUSpeak Exploits", delegate
+            {
+                Configuration.GetConfig().NoUSpeakExploits = true;
+                Configuration.SaveConfiguration();
+            }, "Allow\nUSpeak Exploits", delegate
+            {
+                Configuration.GetConfig().NoUSpeakExploits = false;
+                Configuration.SaveConfiguration();
+            }, "Allow/Prevent USpeak Exploits from affecting you.", Color.red, Color.white).setToggleState(Configuration.GetConfig().NoUSpeakExploits);
         }
     }
 }

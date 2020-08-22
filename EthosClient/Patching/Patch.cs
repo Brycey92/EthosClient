@@ -1,4 +1,5 @@
-﻿using Harmony;
+﻿using EthosClient.Utils;
+using Harmony;
 using Il2CppSystem.Reflection;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,10 @@ namespace EthosClient.Patching
                 HarmonyInstance instance = HarmonyInstance.Create(ID);
                 PatchIDs.Add(ID, instance);
             }
+
+            if (GeneralUtils.IsDevBranch)
+                ConsoleUtil.Info($"Patching {ID}\nTarget Method: {Target.Name}\nPrefix: {Before.methodName}\nAfter: {(After == null ? "None." : After.methodName)}");
+
             PatchIDs[ID].Patch(TargetMethod, Prefix, Postfix);
         }
     }

@@ -13,18 +13,9 @@ using EthosClient.Utils;
 
 namespace RubyButtonAPI
 {
-    //Firstly, thanks to Emilia for helping me update this to the unhollower.
-    //This adds a couple of new functions compared to the old one, however,
-    //like the last one, I will not be providing any support as I will
-    //personally not be using melonloader/unhollower in the near future.
-
-    //Look here for a useful example guide:
-    //https://github.com/DubyaDude/RubyButtonAPI/blob/master/RubyButtonAPI_Old.cs
-
     public static class QMButtonAPI
     {
-        //REPLACE THIS STRING SO YOUR MENU DOESNT COLLIDE WITH OTHER MENUS
-        public static string identifier = "FUNERALV2LOL";
+        public static string identifier = "ETHOSCLIENT";
         public static Color mBackground = Color.red;
         public static Color mForeground = Color.white;
         public static Color bBackground = Color.red;
@@ -41,15 +32,11 @@ namespace RubyButtonAPI
         protected Color OrigBackground;
         protected Color OrigText;
 
-        public GameObject getGameObject()
-        {
+        public GameObject getGameObject() {
             return button;
         }
 
-        public void setActive(bool isActive)
-        {
-            button.gameObject.SetActive(isActive);
-        }
+        public void setActive(bool isActive) => button.gameObject.SetActive(isActive);
 
         public void setIntractable(bool isIntractable)
         {
@@ -82,16 +69,10 @@ namespace RubyButtonAPI
             button.GetComponent<UiTooltip>().alternateText = buttonToolTip;
         }
 
-        public void DestroyMe()
-        {
-            try
-            {
-                UnityEngine.Object.Destroy(button);
-            }
-            catch { }
-        }
+        public void DestroyMe() => UnityEngine.Object.Destroy(button);
 
         public virtual void setBackgroundColor(Color buttonBackgroundColor, bool save = true) { }
+
         public virtual void setTextColor(Color buttonTextColor, bool save = true) { }
     }
 
@@ -235,13 +216,9 @@ namespace RubyButtonAPI
             button.GetComponent<Button>().onClick.AddListener(UnhollowerRuntimeLib.DelegateSupport.ConvertDelegate<UnityAction>((System.Action)(() =>
             {
                 if (btnOn.activeSelf)
-                {
                     setToggleState(false, true);
-                }
                 else
-                {
                     setToggleState(true, true);
-                }
             })));
         }
 
@@ -268,8 +245,7 @@ namespace RubyButtonAPI
             catch { }
         }
 
-        public string getOnText()
-        {
+        public string getOnText() {
             return btnOn.GetComponentsInChildren<Text>()[0].text;
         }
 
@@ -326,9 +302,8 @@ namespace RubyButtonAPI
             ClearButtons();
 
             if (backbtnTextColor == null)
-            {
                 backbtnTextColor = Color.yellow;
-            }
+
             backButton = new QMSingleButton(this, 5, 2, "Back", () => { QMStuff.ShowQuickmenuPage(btnQMLoc); }, "Go Back", backbtnBackgroundColor, backbtnTextColor);
         }
 
@@ -340,24 +315,19 @@ namespace RubyButtonAPI
                 Il2CppSystem.Object obj = enumerator.Current;
                 Transform btnEnum = obj.Cast<Transform>();
                 if (btnEnum != null)
-                {
                     UnityEngine.Object.Destroy(btnEnum.gameObject);
-                }
             }
         }
 
-        public string getMenuName()
-        {
+        public string getMenuName() {
             return menuName;
         }
 
-        public QMSingleButton getMainButton()
-        {
+        public QMSingleButton getMainButton() {
             return mainButton;
         }
 
-        public QMSingleButton getBackButton()
-        {
+        public QMSingleButton getBackButton() {
             return backButton;
         }
 
@@ -369,43 +339,30 @@ namespace RubyButtonAPI
     }
     public class QMStuff
     {
-        // Internal cache of the BoxCollider Background for the Quick Menu
         private static BoxCollider QuickMenuBackgroundReference;
 
-        // Internal cache of the Single Button Template for the Quick Menu
         private static GameObject SingleButtonReference;
 
-        // Internal cache of the Toggle Button Template for the Quick Menu
         private static GameObject ToggleButtonReference;
 
-        // Internal cache of the Nested Menu Template for the Quick Menu
         private static Transform NestedButtonReference;
 
-        // Internal cache of the QuickMenu
         private static QuickMenu quickmenuInstance;
 
-        // Internal cache of the VRCUiManager
         private static VRCUiManager vrcuimInstance;
 
-
-
-        // Fetch the background from the Quick Menu
         public static BoxCollider QuickMenuBackground()
         {
             if (QuickMenuBackgroundReference == null)
                 QuickMenuBackgroundReference = GetQuickMenuInstance().GetComponent<BoxCollider>();
             return QuickMenuBackgroundReference;
         }
-
-        // Fetch the Single Button Template from the Quick Menu
         public static GameObject SingleButtonTemplate()
         {
             if (SingleButtonReference == null)
                 SingleButtonReference = GetQuickMenuInstance().transform.Find("ShortcutMenu/WorldsButton").gameObject;
             return SingleButtonReference;
         }
-
-        // Fetch the Toggle Button Template from the Quick Menu
         public static GameObject ToggleButtonTemplate()
         {
             if (ToggleButtonReference == null)
@@ -414,8 +371,6 @@ namespace RubyButtonAPI
             }
             return ToggleButtonReference;
         }
-
-        // Fetch the Nested Menu Template from the Quick Menu
         public static Transform NestedMenuTemplate()
         {
             if (NestedButtonReference == null)
@@ -424,8 +379,6 @@ namespace RubyButtonAPI
             }
             return NestedButtonReference;
         }
-
-        // Fetch the Quick Menu instance
         public static QuickMenu GetQuickMenuInstance()
         {
             if (quickmenuInstance == null)
@@ -434,7 +387,6 @@ namespace RubyButtonAPI
             }
             return quickmenuInstance;
         }
-        // Fetch the VRCUiManager instance
         public static VRCUiManager GetVRCUiMInstance()
         {
             if (vrcuimInstance == null)
@@ -444,10 +396,8 @@ namespace RubyButtonAPI
             return vrcuimInstance;
         }
 
-        // Cache the FieldInfo for getting the current page. Hope to god this works!
         private static FieldInfo currentPageGetter;
 
-        // Show a Quick Menu page via the Page Name. Hope to god this works!
         public static void ShowQuickmenuPage(string pagename)
         {
             QuickMenu quickmenu = GetQuickMenuInstance();
@@ -461,14 +411,12 @@ namespace RubyButtonAPI
 
 
                 FieldInfo[] fis = Il2CppType.Of<QuickMenu>().GetFields(BindingFlags.NonPublic | BindingFlags.Instance).Where((fi) => fi.FieldType == Il2CppType.Of<GameObject>()).ToArray();
-                //MelonLoader.MelonModLogger.Log("[QMStuff] GameObject Fields in QuickMenu:");
                 int count = 0;
                 foreach (FieldInfo fi in fis)
                 {
                     GameObject value = fi.GetValue(quickmenu)?.TryCast<GameObject>();
                     if (value == shortcutMenu && ++count == 2)
                     {
-                        //MelonLoader.MelonModLogger.Log("[QMStuff] currentPage field: " + fi.Name);
                         currentPageGetter = fi;
                         break;
                     }

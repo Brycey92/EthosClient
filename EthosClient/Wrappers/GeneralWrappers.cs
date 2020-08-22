@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.XR;
 using VRC;
 using VRC.Core;
 
@@ -42,7 +43,7 @@ namespace EthosClient.Wrappers
 
         public static void AlertV2(string title, string Content, string buttonname, Action action, string button2, Action action2) => VRCUiPopupManager.field_Private_Static_VRCUiPopupManager_0.Method_Public_Void_String_String_String_Action_String_Action_Action_1_VRCUiPopup_0(title, Content, buttonname, action, button2, action2, null);
 
-        public static bool IsInVr() { return !VRCTrackingManager.Method_Public_Static_Boolean_9(); }
+        public static bool IsInVr() { return XRDevice.isPresent; }
 
         public static void ShowInputKeyBoard(Il2CppSystem.Action<string, Il2CppSystem.Collections.Generic.List<KeyCode>, Text> InputAction)
         {
@@ -59,7 +60,7 @@ namespace EthosClient.Wrappers
                 VRCUiPopupManager vrcpopup = GetVRCUiPopupManager();
                 vrcpopup.Method_Private_Void_0();
             }
-            catch(Exception) { }
+            catch { }
         }
     }
 }

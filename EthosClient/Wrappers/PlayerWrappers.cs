@@ -32,6 +32,8 @@ namespace EthosClient.Wrappers
 
         public static USpeaker GetUSpeaker(this VRCPlayer player) { return player.prop_USpeaker_0; }
 
+        public static PlayerNet GetPlayerNet(this Player player) { return player.prop_PlayerNet_0; }
+
         public static Player GetPlayer(this PlayerManager instance, string UserID)
         {
             var Players = instance.GetAllPlayers();

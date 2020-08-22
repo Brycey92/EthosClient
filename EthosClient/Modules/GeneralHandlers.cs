@@ -32,7 +32,8 @@ namespace EthosClient.Modules
         {
             try
             {
-                if (StoredKeybinds.Count() == 0) StoredKeybinds.AddRange(Configuration.GetConfig().Keybinds);
+                if (StoredKeybinds.Count() == 0) 
+                    StoredKeybinds.AddRange(Configuration.GetConfig().Keybinds);
 
                 foreach (var keybind in StoredKeybinds)
                 {
@@ -59,16 +60,12 @@ namespace EthosClient.Modules
                                         GeneralWrappers.GetHighlightsFX().EnableOutline(array[i].transform.Find("SelectRegion").GetComponent<Renderer>(), GeneralUtils.ESP);
                                     }
                                 }
-
                                 foreach (VRCSDK2.VRC_Interactable vrc_Interactable in Resources.FindObjectsOfTypeAll<VRCSDK2.VRC_Interactable>())
                                     GeneralWrappers.GetHighlightsFX().EnableOutline(vrc_Interactable.GetComponentInChildren<Renderer>(), GeneralUtils.ESP);
-
                                 foreach (VRCSDK2.VRC_Pickup vrc_Pickup in Resources.FindObjectsOfTypeAll<VRCSDK2.VRC_Pickup>())
                                     GeneralWrappers.GetHighlightsFX().EnableOutline(vrc_Pickup.GetComponentInChildren<Renderer>(), GeneralUtils.ESP);
-
                                 foreach (PortalInternal portalInternal in Resources.FindObjectsOfTypeAll<PortalInternal>())
                                     GeneralWrappers.GetHighlightsFX().EnableOutline(portalInternal.GetComponentInChildren<Renderer>(), GeneralUtils.ESP);
-
                                 break;
                             case EthosFeature.Autism:
                                 GeneralUtils.Autism = !GeneralUtils.Autism;
@@ -94,27 +91,36 @@ namespace EthosClient.Modules
 
                 if (GeneralUtils.AutoDeleteEveryonesPortals)
                 {
-                    foreach (var portal in Resources.FindObjectsOfTypeAll<PortalInternal>())
-                        UnityEngine.Object.Destroy(portal.gameObject);
+                    if (Resources.FindObjectsOfTypeAll<PortalInternal>().Count() > 0)
+                    {
+                        foreach (var portal in Resources.FindObjectsOfTypeAll<PortalInternal>())
+                            UnityEngine.Object.Destroy(portal.gameObject);
+                    }
                 }
 
                 if (GeneralUtils.AutoDeleteNonFriendsPortals)
                 {
-                    foreach (var portal in Resources.FindObjectsOfTypeAll<PortalInternal>())
+                    if (Resources.FindObjectsOfTypeAll<PortalInternal>().Count() > 0)
                     {
-                        var player = portal.GetPlayer();
-                        if (player.GetAPIUser() != null)
+                        foreach (var portal in Resources.FindObjectsOfTypeAll<PortalInternal>())
                         {
-                            if (!APIUser.IsFriendsWith(player.GetAPIUser().id))
-                                UnityEngine.Object.Destroy(portal.gameObject);
+                            var player = portal.GetPlayer();
+                            if (player.GetAPIUser() != null)
+                            {
+                                if (!APIUser.IsFriendsWith(player.GetAPIUser().id))
+                                    UnityEngine.Object.Destroy(portal.gameObject);
+                            }
                         }
                     }
                 }
 
                 if (GeneralUtils.AutoDeleteAllPickups)
                 {
-                    foreach (var pickup in Resources.FindObjectsOfTypeAll<VRC_Pickup>())
-                        UnityEngine.Object.Destroy(pickup.gameObject);
+                    if (Resources.FindObjectsOfTypeAll<VRC_Pickup>().Count() > 0)
+                    {
+                        foreach (var pickup in Resources.FindObjectsOfTypeAll<VRC_Pickup>())
+                            UnityEngine.Object.Destroy(pickup.gameObject);
+                    }
                 }
 
                 if (GeneralUtils.SpinBot)
@@ -138,19 +144,26 @@ namespace EthosClient.Modules
                     var currentSpeed = (Input.GetKey(KeyCode.LeftShift) ? 16f : 8f);
                     var player = GeneralWrappers.GetPlayerManager().GetCurrentPlayer();
 
-                    if (Input.GetKey(KeyCode.W)) player.transform.position += gameObject.transform.forward * currentSpeed * Time.deltaTime;
+                    if (Input.GetKey(KeyCode.W))  
+                        player.transform.position += gameObject.transform.forward * currentSpeed * Time.deltaTime;
 
-                    if (Input.GetKey(KeyCode.A)) player.transform.position += player.transform.right * -1f * currentSpeed * Time.deltaTime;
+                    if (Input.GetKey(KeyCode.A)) 
+                        player.transform.position += player.transform.right * -1f * currentSpeed * Time.deltaTime;
 
-                    if (Input.GetKey(KeyCode.S)) player.transform.position += gameObject.transform.forward * -1f * currentSpeed * Time.deltaTime;
+                    if (Input.GetKey(KeyCode.S)) 
+                        player.transform.position += gameObject.transform.forward * -1f * currentSpeed * Time.deltaTime;
 
-                    if (Input.GetKey(KeyCode.D)) player.transform.position += player.transform.right * currentSpeed * Time.deltaTime;
+                    if (Input.GetKey(KeyCode.D)) 
+                        player.transform.position += player.transform.right * currentSpeed * Time.deltaTime;
 
-                    if (Input.GetKey(KeyCode.Space)) player.transform.position += player.transform.up * currentSpeed * Time.deltaTime;
+                    if (Input.GetKey(KeyCode.Space)) 
+                        player.transform.position += player.transform.up * currentSpeed * Time.deltaTime;
 
-                    if (Math.Abs(Input.GetAxis("Joy1 Axis 2")) > 0f) player.transform.position += gameObject.transform.forward * currentSpeed * Time.deltaTime * (Input.GetAxis("Joy1 Axis 2") * -1f);
+                    if (Math.Abs(Input.GetAxis("Joy1 Axis 2")) > 0f) 
+                        player.transform.position += gameObject.transform.forward * currentSpeed * Time.deltaTime * (Input.GetAxis("Joy1 Axis 2") * -1f);
 
-                    if (Math.Abs(Input.GetAxis("Joy1 Axis 1")) > 0f) player.transform.position += gameObject.transform.right * currentSpeed * Time.deltaTime * Input.GetAxis("Joy1 Axis 1");
+                    if (Math.Abs(Input.GetAxis("Joy1 Axis 1")) > 0f) 
+                        player.transform.position += gameObject.transform.right * currentSpeed * Time.deltaTime * Input.GetAxis("Joy1 Axis 1");
                 }
             }
             catch (Exception) { }

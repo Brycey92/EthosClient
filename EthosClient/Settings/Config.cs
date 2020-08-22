@@ -19,6 +19,8 @@ namespace EthosClient.Settings
             LogModerations = false,
             AntiPublicBan = true,
             AntiKick = true,
+            AntiPhotonBot = true,
+            NoUSpeakExploits = true,
             VideoPlayerSafety = true,
             AntiBlock = true,
             PortalSafety = true,
@@ -27,7 +29,7 @@ namespace EthosClient.Settings
             MenuRGB = false,
             DefaultLogToConsole = true;
 
-        public string ClientVersion = "2.4";
+        public string ClientVersion = "2.5";
 
         public List<FavoritedAvatar> ExtendedFavoritedAvatars = new List<FavoritedAvatar>();
 
