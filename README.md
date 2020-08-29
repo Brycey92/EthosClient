@@ -1,4 +1,4 @@
 # Ethos Client <br />
 
-<h1> Credits
+Credits: <br />
 https://github.com/DubyaDude/RubyButtonAPI
