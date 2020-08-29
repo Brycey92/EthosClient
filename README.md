@@ -1,4 +1,4 @@
-# Ethos Client (This has been discontinued due to personal reasons)
+# Ethos Client <br />
 
-# Credits: <br />
-https://github.com/DubyaDude/RubyButtonAPI - Button API used
+<h1>Credits</h1>
+https://github.com/DubyaDude/RubyButtonAPI
