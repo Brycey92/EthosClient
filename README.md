@@ -1,4 +1,4 @@
-# Ethos Client <br />
+Ethos Client (Discontinued)
 
 Credits: <br />
 https://github.com/DubyaDude/RubyButtonAPI
